@@ -11,7 +11,7 @@ from pcmonitor.utils import DefaultList
 
 class CpuMetricCollector:
     def __init__(self, interval:int = 1):
-        self.cpu_metric = None
+        self.metric = None
         self.interval = interval
         self._thread: Optional[threading.Thread] = None
         self._thread_lock = threading.Lock()
@@ -70,7 +70,7 @@ class CpuMetricCollector:
                 cores=cores
             )
             with self._thread_lock:
-                self.cpu_metric = cpu_metric
+                self.metric = cpu_metric
             time.sleep(self.interval)
 
     def start(self):
@@ -86,7 +86,7 @@ class CpuMetricCollector:
 
     def get_metrics(self):
         with self._thread_lock:
-            return self.cpu_metric
+            return self.metric
 
 
 
