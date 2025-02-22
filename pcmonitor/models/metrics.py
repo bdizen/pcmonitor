@@ -37,25 +37,27 @@ class DiskType(Enum):
     UNKNOWN = "Unknown"
 
 @dataclass
-class StorageMetric:
+class PartitionMetric:
+    partition_name: str
     capacity: int
     used_space: int
     free_space: int
     usage_percent: float
-
-@dataclass
-class PartitionMetric(StorageMetric):
-    partition_name: str
     mount_point: str
     filesystem_type: str
 
 @dataclass
-class DiskMetric(StorageMetric):
+class DiskMetric:
     disk_name: str
     disk_type: DiskType
     read_speed: int
     write_speed: int
     iops: int
+    capacity: int
+
+@dataclass
+class StorageMetric:
+    disks: list[DiskMetric]
     partitions: list[PartitionMetric]
 
 @dataclass
