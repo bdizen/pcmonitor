@@ -65,6 +65,7 @@ class StorageMetricCollector:
         part_collectors = {part.device: PartitionMetricCollector(part.device, interval=self.interval) for part in partitions}
         for collector in part_collectors.values():
             collector.start()
+
         while not self._stop_event.is_set():
             storage_metric = StorageMetric(
                 disks=[collector.get_metrics() for collector in drive_collectors.values()],
@@ -73,6 +74,7 @@ class StorageMetricCollector:
             with self._thread_lock:
                 self.metric = storage_metric
             time.sleep(self.interval)
+
         for collector in drive_collectors.values():
             collector.stop()
         for collector in part_collectors.values():
