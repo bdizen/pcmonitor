@@ -61,7 +61,10 @@ class StorageMetric:
     partitions: list[PartitionMetric]
 
 @dataclass
-class NetworkMetric:
+class NetworkInterfaceMetric:
+    interface_name: str
+    ip_address: str
+    mac_address: str
     total_rx: int
     total_tx: int
     rx_speed: int
@@ -69,7 +72,11 @@ class NetworkMetric:
     packet_lost_percent: float
 
 @dataclass
-class NetworkInterfaceMetric(NetworkMetric):
-    interface_name: str
-    ip_address: str
-    mac_address: str
+class NetworkMetric:
+    total_rx: int
+    total_tx: int
+    rx_speed: int
+    tx_speed: int
+    nics: list[NetworkInterfaceMetric]
+
+
