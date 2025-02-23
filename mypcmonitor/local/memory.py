@@ -48,6 +48,8 @@ class MemoryView(Container):
 
     def update_stats(self):
         mem_metric = mem_collector.get_metrics()
+        if not mem_metric:
+            return
         self.query_one("#mem-container", RamDisplay).update(mem_metric)
         self.query_one("#mem-bar", ProgressBar).update(progress=mem_metric.memory_usage)
         self.query_one("#swap-container", SwapDisplay).update(mem_metric)
