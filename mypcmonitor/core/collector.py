@@ -37,5 +37,3 @@ class BaseMetricCollector(ABC, Generic[T]):
         self._metric_ready.wait()
         with self._thread_lock:
             return self.metric
-
-R
