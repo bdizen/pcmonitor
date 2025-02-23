@@ -1,8 +1,5 @@
 import os
-import platform
-import threading
 import time
-from typing import Optional
 import psutil
 import subprocess
 
@@ -50,9 +47,7 @@ class StorageMetricCollector(BaseMetricCollector[StorageMetric]):
 
     def _collect(self) -> None:
         drives = self._get_drives()
-        print(drives)
         drive_collectors = {drive: DiskMetricCollector(drive, interval=self.interval) for drive in drives}
-        print(drive_collectors['disk0'].drive)
         for collector in drive_collectors.values():
             collector.start()
         partitions = psutil.disk_partitions()

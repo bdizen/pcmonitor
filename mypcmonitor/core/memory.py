@@ -1,7 +1,4 @@
-import platform
-import threading
 import time
-from typing import Optional
 import psutil
 
 from mypcmonitor.core.collector import BaseMetricCollector
