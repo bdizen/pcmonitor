@@ -4,7 +4,7 @@ import time
 import psutil
 from psutil._common import snicaddr, snetio
 
-from mypcmonitor.core.collector import BaseMetricCollector
+from mypcmonitor.collectors import BaseMetricCollector
 from mypcmonitor.models.metrics import NetworkInterfaceMetric, NetworkMetric
 
 

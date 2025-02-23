@@ -1,6 +1,6 @@
-from mypcmonitor.core.cpu import CpuMetricCollector
-from mypcmonitor.core.memory import MemoryMetricCollector
-from mypcmonitor.core.storage import StorageMetricCollector
+from mypcmonitor.exporter.collectors import CpuMetricCollector
+from mypcmonitor.exporter.collectors import MemoryMetricCollector
+from mypcmonitor.exporter.collectors import StorageMetricCollector
 
 cpu_collector = CpuMetricCollector()
 mem_collector = MemoryMetricCollector()

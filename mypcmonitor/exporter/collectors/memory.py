@@ -1,7 +1,7 @@
 import time
 import psutil
 
-from mypcmonitor.core.collector import BaseMetricCollector
+from mypcmonitor.collectors import BaseMetricCollector
 from mypcmonitor.models.metrics import RamMetric
 
 

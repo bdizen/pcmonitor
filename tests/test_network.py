@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from mypcmonitor.core.network import NetworkMetricCollector
+from mypcmonitor.exporter.collectors import NetworkMetricCollector
 from tests.test_collectors import test_collector
 
 

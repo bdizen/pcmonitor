@@ -1,5 +1,5 @@
 from unittest import TestCase
-from mypcmonitor.core.memory import MemoryMetricCollector
+from mypcmonitor.exporter.collectors import MemoryMetricCollector
 from tests.test_collectors import test_collector
 
 

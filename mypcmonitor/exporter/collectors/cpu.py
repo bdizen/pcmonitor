@@ -4,7 +4,7 @@ import time
 import psutil
 import re
 
-from mypcmonitor.core.collector import BaseMetricCollector
+from mypcmonitor.collectors import BaseMetricCollector
 from mypcmonitor.models.metrics import CpuMetric, CoreMetric
 from mypcmonitor.utils import DefaultList
 
