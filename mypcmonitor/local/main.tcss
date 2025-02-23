@@ -55,3 +55,33 @@ RamDisplay {
 SwapDisplay {
     text-align: center;
 }
+
+#disks-container {
+        layout: grid;
+        grid-size: 4;
+        grid-rows: 1fr;
+        grid-columns: 1fr;
+        grid-gutter: 1;
+}
+
+#parts-container {
+        layout: grid;
+        grid-size: 4;
+        grid-rows: 1fr;
+        grid-columns: 1fr;
+        grid-gutter: 1;
+}
+
+.disk-box {
+    border: round white;
+
+    width: 100%;
+    height: 100%;
+}
+
+.part-box {
+    border: round white;
+
+    width: 100%;
+    height: 100%;
+}

@@ -5,9 +5,11 @@ from textual.containers import Container, Vertical
 from textual.screen import Screen
 from textual.widgets import Header, Footer, Static, TabbedContent
 
-from mypcmonitor.local import cpu_collector, mem_collector
+from mypcmonitor.local import cpu_collector, mem_collector, storage_collector
 from mypcmonitor.local.cpu import CPU
 from mypcmonitor.local.memory import MemoryView
+from mypcmonitor.local.storage import StorageView
+
 
 class PcMonitor(App):
     CSS_PATH = "main.tcss"
@@ -22,7 +24,7 @@ class PcMonitor(App):
         with TabbedContent("CPU", "Memory", "Storage", "Network"):
             yield CPU()
             yield MemoryView()
-            yield Container()
+            yield StorageView()
             yield Container()
         yield Footer()
 
@@ -30,6 +32,8 @@ def main():
     app = PcMonitor()
     cpu_collector.start()
     mem_collector.start()
+    storage_collector.start()
     app.run()
     cpu_collector.stop()
     mem_collector.stop()
+    storage_collector.stop()
