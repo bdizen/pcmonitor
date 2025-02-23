@@ -2,7 +2,7 @@ from textual.app import ComposeResult
 from textual.containers import Container, Vertical
 from textual.widgets import Static
 
-from pcmonitor.local import cpu_collector
+from mypcmonitor.local import cpu_collector
 
 
 class CPU(Container):

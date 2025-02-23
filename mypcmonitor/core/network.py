@@ -7,7 +7,7 @@ from typing import Optional
 import psutil
 from psutil._common import snicaddr, snetio
 
-from pcmonitor.models.metrics import NetworkInterfaceMetric, NetworkMetric
+from mypcmonitor.models.metrics import NetworkInterfaceMetric, NetworkMetric
 
 
 class NetworkMetricCollector:

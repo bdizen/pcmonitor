@@ -1,5 +1,5 @@
 from unittest import TestCase
-from pcmonitor.core.cpu import CpuMetricCollector
+from mypcmonitor.core.cpu import CpuMetricCollector
 from tests.test_collectors import test_collector
 
 

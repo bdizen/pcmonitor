@@ -5,9 +5,9 @@ from textual.containers import Container, Vertical
 from textual.screen import Screen
 from textual.widgets import Header, Footer, Static, TabbedContent
 
-from pcmonitor.local import cpu_collector, mem_collector
-from pcmonitor.local.cpu import CPU
-from pcmonitor.local.memory import MemoryView
+from mypcmonitor.local import cpu_collector, mem_collector
+from mypcmonitor.local.cpu import CPU
+from mypcmonitor.local.memory import MemoryView
 
 class PcMonitor(App):
     CSS_PATH = "main.tcss"

@@ -5,8 +5,8 @@ import time
 from typing import Optional
 import psutil
 import re
-from pcmonitor.models.metrics import CpuMetric, CoreMetric
-from pcmonitor.utils import DefaultList
+from mypcmonitor.models.metrics import CpuMetric, CoreMetric
+from mypcmonitor.utils import DefaultList
 
 
 class CpuMetricCollector:
@@ -84,7 +84,7 @@ class CpuMetricCollector:
         if self._thread and self._thread.is_alive():
             self._thread.join()
 
-    def get_metrics(self):
+    def get_metrics(self) -> CpuMetric:
         with self._thread_lock:
             return self.metric
 

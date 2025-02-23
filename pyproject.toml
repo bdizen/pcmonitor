@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "pcmonitor"
+name = "mypcmonitor"
 version = "0.1.0"
 description = ""
 authors = ["bdizen <bdizenweb@gmail.com>"]
@@ -10,6 +10,8 @@ python = "^3.13"
 psutil = "^7.0.0"
 textual = "^2.1.1"
 
+[tool.poetry.scripts]
+pcmonitor-local = "mypcmonitor.local.main:main"
 
 [build-system]
 requires = ["poetry-core"]

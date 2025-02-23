@@ -3,7 +3,7 @@ import threading
 import time
 from typing import Optional
 import psutil
-from pcmonitor.models.metrics import RamMetric
+from mypcmonitor.models.metrics import RamMetric
 
 
 class MemoryMetricCollector:

@@ -8,8 +8,8 @@ import subprocess
 
 from psutil._common import sdiskpart
 
-from pcmonitor.models.metrics import PartitionMetric, DiskMetric, DiskType, StorageMetric
-from pcmonitor.utils import load_plist
+from mypcmonitor.models.metrics import PartitionMetric, DiskMetric, DiskType, StorageMetric
+from mypcmonitor.utils import load_plist
 import json
 
 

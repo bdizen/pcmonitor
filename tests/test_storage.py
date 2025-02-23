@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from pcmonitor.core.storage import DiskMetricCollector, PartitionMetricCollector, StorageMetricCollector
+from mypcmonitor.core.storage import DiskMetricCollector, PartitionMetricCollector, StorageMetricCollector
 from tests.test_collectors import test_collector
 
 
