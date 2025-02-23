@@ -29,7 +29,6 @@ class CPU(Container):
         cpu_metric = cpu_collector.get_metrics()
         if not cpu_metric:
             return
-
         self.query_one("#cpu_stats", Static).update(f"[bold]CPU Name:[/bold] {cpu_metric.cpu_name} "
                                                    f"[bold]Architecture:[/bold] {cpu_metric.architecture} "
                                                    f"[bold]Cores#:[/bold] {cpu_metric.num_cores} "

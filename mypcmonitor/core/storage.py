@@ -20,6 +20,7 @@ class StorageMetricCollector:
         self._thread: Optional[threading.Thread] = None
         self._thread_lock = threading.Lock()
         self._stop_event = threading.Event()
+        self._metric_ready = threading.Event()
         self.system = platform.system()
 
     @staticmethod
@@ -73,6 +74,7 @@ class StorageMetricCollector:
             )
             with self._thread_lock:
                 self.metric = storage_metric
+                self._metric_ready.set()
             time.sleep(self.interval)
 
         for collector in drive_collectors.values():
@@ -92,6 +94,7 @@ class StorageMetricCollector:
             self._thread.join()
 
     def get_metrics(self):
+        self._metric_ready.wait()
         with self._thread_lock:
             return self.metric
 
@@ -103,6 +106,7 @@ class DiskMetricCollector:
         self._thread: Optional[threading.Thread] = None
         self._thread_lock = threading.Lock()
         self._stop_event = threading.Event()
+        self._metric_ready = threading.Event()
         self.system = platform.system()
 
         self.drive = drive
@@ -177,6 +181,7 @@ class DiskMetricCollector:
 
             with self._thread_lock:
                 self.metric = disk_metric
+                self._metric_ready.set()
 
 
     def start(self) -> None:
@@ -191,6 +196,7 @@ class DiskMetricCollector:
             self._thread.join()
 
     def get_metrics(self) -> DiskMetric:
+        self._metric_ready.wait()
         with self._thread_lock:
             return self.metric
 
@@ -201,6 +207,7 @@ class PartitionMetricCollector:
         self._thread: Optional[threading.Thread] = None
         self._thread_lock = threading.Lock()
         self._stop_event = threading.Event()
+        self._metric_ready = threading.Event()
         self.system = platform.system()
 
         self.device = device
@@ -216,20 +223,21 @@ class PartitionMetricCollector:
 
     def _collect_part(self) -> None:
             while not self._stop_event.is_set():
-                if not self.metric:
-                    usage = psutil.disk_usage(self.info.mountpoint)
-                    part_metric = PartitionMetric(
-                        capacity=usage.total,
-                        usage_percent=usage.percent,
-                        partition_name=self.device,
-                        free_space=usage.free,
-                        used_space=usage.used,
-                        mount_point=self.info.mountpoint,
-                        filesystem_type=self.info.fstype
-                    )
+                usage = psutil.disk_usage(self.info.mountpoint)
+                part_metric = PartitionMetric(
+                    capacity=usage.total,
+                    usage_percent=usage.percent,
+                    partition_name=self.device,
+                    free_space=usage.free,
+                    used_space=usage.used,
+                    mount_point=self.info.mountpoint,
+                    filesystem_type=self.info.fstype
+                )
 
-                    with self._thread_lock:
-                        self.metric = part_metric
+                with self._thread_lock:
+                    self.metric = part_metric
+                    self._metric_ready.set()
+                time.sleep(self.interval)
 
 
     def start(self) -> None:
@@ -244,5 +252,6 @@ class PartitionMetricCollector:
             self._thread.join()
 
     def get_metrics(self) -> PartitionMetric:
+        self._metric_ready.wait()
         with self._thread_lock:
             return self.metric

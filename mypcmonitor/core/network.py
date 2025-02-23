@@ -17,6 +17,7 @@ class NetworkMetricCollector:
         self._thread: Optional[threading.Thread] = None
         self._thread_lock = threading.Lock()
         self._stop_event = threading.Event()
+        self._metric_ready = threading.Event()
         self.system = platform.system()
 
         self.nics = psutil.net_if_addrs()
@@ -88,6 +89,7 @@ class NetworkMetricCollector:
             )
             with self._thread_lock:
                 self.metric = network_metric
+                self._metric_ready.set()
 
     def start(self):
         if not self._thread or not self._thread.is_alive():
@@ -101,5 +103,6 @@ class NetworkMetricCollector:
             self._thread.join()
 
     def get_metrics(self):
+        self._metric_ready.wait()
         with self._thread_lock:
             return self.metric

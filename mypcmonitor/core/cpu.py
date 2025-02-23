@@ -16,6 +16,7 @@ class CpuMetricCollector:
         self._thread: Optional[threading.Thread] = None
         self._thread_lock = threading.Lock()
         self._stop_event = threading.Event()
+        self._metric_ready = threading.Event()
         self.system = platform.system()
 
     def _cpu_name(self) -> str:
@@ -71,6 +72,7 @@ class CpuMetricCollector:
             )
             with self._thread_lock:
                 self.metric = cpu_metric
+                self._metric_ready.set()
             time.sleep(self.interval)
 
     def start(self):
@@ -85,6 +87,7 @@ class CpuMetricCollector:
             self._thread.join()
 
     def get_metrics(self) -> CpuMetric:
+        self._metric_ready.wait()
         with self._thread_lock:
             return self.metric
 

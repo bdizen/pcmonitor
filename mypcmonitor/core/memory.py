@@ -13,6 +13,7 @@ class MemoryMetricCollector:
         self._thread: Optional[threading.Thread] = None
         self._thread_lock = threading.Lock()
         self._stop_event = threading.Event()
+        self._metric_ready = threading.Event()
         self.system = platform.system()
 
     def _collect_mem(self) -> None:
@@ -30,6 +31,7 @@ class MemoryMetricCollector:
             )
             with self._thread_lock:
                 self.metric = mem_metric
+                self._metric_ready.set()
             time.sleep(self.interval)
 
     def start(self):
@@ -44,6 +46,7 @@ class MemoryMetricCollector:
             self._thread.join()
 
     def get_metrics(self):
+        self._metric_ready.wait()
         with self._thread_lock:
             return self.metric
 
