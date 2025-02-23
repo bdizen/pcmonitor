@@ -27,3 +27,31 @@ Horizontal {
         grid-columns: 1fr;
         grid-gutter: 1;
 }
+
+.title {
+    color: cyan;
+    text-style: bold;
+}
+
+.mem-box {
+    border: round white;
+
+    width: 100%;
+    height: 100%;
+}
+
+#memory-container {
+        layout: grid;
+        grid-size: 1 2;
+        grid-rows: 1fr;
+        grid-columns: 1fr;
+
+}
+
+RamDisplay {
+    text-align: center;
+}
+
+SwapDisplay {
+    text-align: center;
+}
