@@ -8,20 +8,13 @@ import subprocess
 
 from psutil._common import sdiskpart
 
+from mypcmonitor.core.collector import BaseMetricCollector
 from mypcmonitor.models.metrics import PartitionMetric, DiskMetric, DiskType, StorageMetric
 from mypcmonitor.utils import load_plist
 import json
 
 
-class StorageMetricCollector:
-    def __init__(self, interval:int = 1):
-        self.metric = None
-        self.interval = interval
-        self._thread: Optional[threading.Thread] = None
-        self._thread_lock = threading.Lock()
-        self._stop_event = threading.Event()
-        self._metric_ready = threading.Event()
-        self.system = platform.system()
+class StorageMetricCollector(BaseMetricCollector[StorageMetric]):
 
     @staticmethod
     def _macos_drives() -> str:
@@ -55,7 +48,7 @@ class StorageMetricCollector:
         elif self.system == "Windows":
             return os.listdrives()
 
-    def _collect_storage(self) -> None:
+    def _collect(self) -> None:
         drives = self._get_drives()
         print(drives)
         drive_collectors = {drive: DiskMetricCollector(drive, interval=self.interval) for drive in drives}
@@ -82,33 +75,9 @@ class StorageMetricCollector:
         for collector in part_collectors.values():
             collector.stop()
 
-    def start(self):
-        if not self._thread or not self._thread.is_alive():
-            self._stop_event.clear()
-            self._thread = threading.Thread(target=self._collect_storage, daemon=True)
-            self._thread.start()
-
-    def stop(self):
-        self._stop_event.set()
-        if self._thread and self._thread.is_alive():
-            self._thread.join()
-
-    def get_metrics(self):
-        self._metric_ready.wait()
-        with self._thread_lock:
-            return self.metric
-
-
-class DiskMetricCollector:
+class DiskMetricCollector(BaseMetricCollector[DiskMetric]):
     def __init__(self, drive:str , interval:int = 1):
-        self.metric = None
-        self.interval = interval
-        self._thread: Optional[threading.Thread] = None
-        self._thread_lock = threading.Lock()
-        self._stop_event = threading.Event()
-        self._metric_ready = threading.Event()
-        self.system = platform.system()
-
+        super().__init__(interval)
         self.drive = drive
 
     def _macos_drive_type(self) -> DiskType:
@@ -165,7 +134,7 @@ class DiskMetricCollector:
             raise NotImplementedError()
         return -1
 
-    def _collect_disk(self) -> None:
+    def _collect(self) -> None:
         while not self._stop_event.is_set():
             io_start = psutil.disk_io_counters(perdisk=True)[self.drive]
             time.sleep(self.interval)
@@ -183,33 +152,9 @@ class DiskMetricCollector:
                 self.metric = disk_metric
                 self._metric_ready.set()
 
-
-    def start(self) -> None:
-        if not self._thread or not self._thread.is_alive():
-            self._stop_event.clear()
-            self._thread = threading.Thread(target=self._collect_disk, daemon=True)
-            self._thread.start()
-
-    def stop(self) -> None:
-        self._stop_event.set()
-        if self._thread and self._thread.is_alive():
-            self._thread.join()
-
-    def get_metrics(self) -> DiskMetric:
-        self._metric_ready.wait()
-        with self._thread_lock:
-            return self.metric
-
-class PartitionMetricCollector:
+class PartitionMetricCollector(BaseMetricCollector[PartitionMetric]):
     def __init__(self, device:str , interval:int = 1):
-        self.metric = None
-        self.interval = interval
-        self._thread: Optional[threading.Thread] = None
-        self._thread_lock = threading.Lock()
-        self._stop_event = threading.Event()
-        self._metric_ready = threading.Event()
-        self.system = platform.system()
-
+        super().__init__(interval)
         self.device = device
 
         partitions = psutil.disk_partitions()
@@ -220,14 +165,13 @@ class PartitionMetricCollector:
         if not self.info:
             raise IndexError
 
-
-    def _collect_part(self) -> None:
+    def _collect(self) -> None:
             while not self._stop_event.is_set():
                 usage = psutil.disk_usage(self.info.mountpoint)
                 part_metric = PartitionMetric(
                     capacity=usage.total,
                     usage_percent=usage.percent,
-                    partition_name=self.device,
+                    partition_name=self.device.removeprefix("/dev/"),
                     free_space=usage.free,
                     used_space=usage.used,
                     mount_point=self.info.mountpoint,
@@ -238,20 +182,3 @@ class PartitionMetricCollector:
                     self.metric = part_metric
                     self._metric_ready.set()
                 time.sleep(self.interval)
-
-
-    def start(self) -> None:
-        if not self._thread or not self._thread.is_alive():
-            self._stop_event.clear()
-            self._thread = threading.Thread(target=self._collect_part, daemon=True)
-            self._thread.start()
-
-    def stop(self) -> None:
-        self._stop_event.set()
-        if self._thread and self._thread.is_alive():
-            self._thread.join()
-
-    def get_metrics(self) -> PartitionMetric:
-        self._metric_ready.wait()
-        with self._thread_lock:
-            return self.metric

@@ -1,24 +1,15 @@
 import platform
 import subprocess
-import threading
 import time
-from typing import Optional
 import psutil
 import re
+
+from mypcmonitor.core.collector import BaseMetricCollector
 from mypcmonitor.models.metrics import CpuMetric, CoreMetric
 from mypcmonitor.utils import DefaultList
 
 
-class CpuMetricCollector:
-    def __init__(self, interval:int = 1):
-        self.metric = None
-        self.interval = interval
-        self._thread: Optional[threading.Thread] = None
-        self._thread_lock = threading.Lock()
-        self._stop_event = threading.Event()
-        self._metric_ready = threading.Event()
-        self.system = platform.system()
-
+class CpuMetricCollector(BaseMetricCollector[CpuMetric]):
     def _cpu_name(self) -> str:
         cpu_name = platform.processor()
         if self.system ==  'Darwin':
@@ -45,7 +36,7 @@ class CpuMetricCollector:
             return psutil.sensors_temperatures()['coretemp'][0].current
         return 0.0
 
-    def _collect_cpu(self) -> None:
+    def _collect(self) -> None:
         # Without interval, the first call for cpu stats return None according to psutil documentation
         psutil.cpu_percent(interval=None, percpu=True)
         num_cores = psutil.cpu_count()
@@ -74,22 +65,6 @@ class CpuMetricCollector:
                 self.metric = cpu_metric
                 self._metric_ready.set()
             time.sleep(self.interval)
-
-    def start(self):
-        if not self._thread or not self._thread.is_alive():
-            self._stop_event.clear()
-            self._thread = threading.Thread(target=self._collect_cpu, daemon=True)
-            self._thread.start()
-
-    def stop(self):
-        self._stop_event.set()
-        if self._thread and self._thread.is_alive():
-            self._thread.join()
-
-    def get_metrics(self) -> CpuMetric:
-        self._metric_ready.wait()
-        with self._thread_lock:
-            return self.metric
 
 
 

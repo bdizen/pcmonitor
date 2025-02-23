@@ -3,20 +3,14 @@ import threading
 import time
 from typing import Optional
 import psutil
+
+from mypcmonitor.core.collector import BaseMetricCollector
 from mypcmonitor.models.metrics import RamMetric
 
 
-class MemoryMetricCollector:
-    def __init__(self, interval:int = 1):
-        self.metric = None
-        self.interval = interval
-        self._thread: Optional[threading.Thread] = None
-        self._thread_lock = threading.Lock()
-        self._stop_event = threading.Event()
-        self._metric_ready = threading.Event()
-        self.system = platform.system()
+class MemoryMetricCollector(BaseMetricCollector[RamMetric]):
 
-    def _collect_mem(self) -> None:
+    def _collect(self) -> None:
         while not self._stop_event.is_set():
             mem = psutil.virtual_memory()
             swap = psutil.swap_memory()
@@ -33,22 +27,6 @@ class MemoryMetricCollector:
                 self.metric = mem_metric
                 self._metric_ready.set()
             time.sleep(self.interval)
-
-    def start(self):
-        if not self._thread or not self._thread.is_alive():
-            self._stop_event.clear()
-            self._thread = threading.Thread(target=self._collect_mem, daemon=True)
-            self._thread.start()
-
-    def stop(self):
-        self._stop_event.set()
-        if self._thread and self._thread.is_alive():
-            self._thread.join()
-
-    def get_metrics(self):
-        self._metric_ready.wait()
-        with self._thread_lock:
-            return self.metric
 
 
 

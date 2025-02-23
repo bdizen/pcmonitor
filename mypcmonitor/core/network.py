@@ -1,25 +1,16 @@
-import platform
 import socket
-import threading
 import time
-from typing import Optional
 
 import psutil
 from psutil._common import snicaddr, snetio
 
+from mypcmonitor.core.collector import BaseMetricCollector
 from mypcmonitor.models.metrics import NetworkInterfaceMetric, NetworkMetric
 
 
-class NetworkMetricCollector:
+class NetworkMetricCollector(BaseMetricCollector[NetworkMetric]):
     def __init__(self, interval:int = 1):
-        self.metric = None
-        self.interval = interval
-        self._thread: Optional[threading.Thread] = None
-        self._thread_lock = threading.Lock()
-        self._stop_event = threading.Event()
-        self._metric_ready = threading.Event()
-        self.system = platform.system()
-
+        super().__init__(interval)
         self.nics = psutil.net_if_addrs()
 
     @staticmethod
@@ -71,7 +62,7 @@ class NetworkMetricCollector:
             ))
         return nic_metrics
 
-    def _collect_network(self) -> None:
+    def _collect(self) -> None:
         while not self._stop_event.is_set():
             nic_metrics = self._collect_network_interfaces()
             total_rx, total_tx, rx_speed, tx_speed = 0, 0, 0, 0
@@ -90,19 +81,3 @@ class NetworkMetricCollector:
             with self._thread_lock:
                 self.metric = network_metric
                 self._metric_ready.set()
-
-    def start(self):
-        if not self._thread or not self._thread.is_alive():
-            self._stop_event.clear()
-            self._thread = threading.Thread(target=self._collect_network, daemon=True)
-            self._thread.start()
-
-    def stop(self):
-        self._stop_event.set()
-        if self._thread and self._thread.is_alive():
-            self._thread.join()
-
-    def get_metrics(self):
-        self._metric_ready.wait()
-        with self._thread_lock:
-            return self.metric
