@@ -1,14 +1,18 @@
 """
 This module defines metric models for CPU, RAM, and disk metrics.
 """
-from dataclasses import dataclass
+
 from enum import Enum
+
+from pydantic.dataclasses import dataclass
+
 
 @dataclass
 class CoreMetric:
     core_id: int
     usage_percent: float
     clock_speed: float
+
 
 @dataclass
 class CpuMetric:
@@ -20,6 +24,7 @@ class CpuMetric:
     temperature: float
     cores: list[CoreMetric]
 
+
 @dataclass
 class RamMetric:
     total_memory: int
@@ -30,11 +35,13 @@ class RamMetric:
     used_swap: int
     swap_usage: float
 
+
 class DiskType(Enum):
     HDD = "HardDisk"
     SSD = "SolidStateDrive"
     NVME = "NVMe"
     UNKNOWN = "Unknown"
+
 
 @dataclass
 class PartitionMetric:
@@ -46,6 +53,7 @@ class PartitionMetric:
     mount_point: str
     filesystem_type: str
 
+
 @dataclass
 class DiskMetric:
     disk_name: str
@@ -55,21 +63,24 @@ class DiskMetric:
     iops: int
     capacity: int
 
+
 @dataclass
 class StorageMetric:
     disks: list[DiskMetric]
     partitions: list[PartitionMetric]
 
+
 @dataclass
 class NetworkInterfaceMetric:
     interface_name: str
-    ip_address: str
-    mac_address: str
+    ip_address: str | None
+    mac_address: str | None
     total_rx: int
     total_tx: int
     rx_speed: int
     tx_speed: int
     packet_lost_percent: float
+
 
 @dataclass
 class NetworkMetric:
@@ -80,3 +91,9 @@ class NetworkMetric:
     nics: list[NetworkInterfaceMetric]
 
 
+@dataclass
+class InstanceMetric:
+    cpu: CpuMetric
+    memory: RamMetric
+    storage: StorageMetric
+    network: NetworkMetric
