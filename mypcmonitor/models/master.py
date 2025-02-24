@@ -3,7 +3,7 @@ import hashlib
 from pydantic.dataclasses import dataclass
 
 from mypcmonitor.collectors import BaseMetricCollector
-from mypcmonitor.models import (CpuMetric, NetworkMetric, RamMetric,
+from mypcmonitor.models.metrics import (CpuMetric, NetworkMetric, RamMetric,
                                 StorageMetric)
 
 

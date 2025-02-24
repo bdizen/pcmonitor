@@ -1,5 +1,6 @@
-import subprocess
 import json
+import subprocess
+
 
 class DefaultList(list):
     def __init__(self, default_value=None):

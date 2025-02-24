@@ -1,6 +1,7 @@
-from pprint import pprint
-from dataclasses import asdict
 import time
+from dataclasses import asdict
+from pprint import pprint
+
 
 def test_collector(collector, interval=1):
     collector.start()
