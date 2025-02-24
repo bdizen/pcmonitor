@@ -1,14 +1,13 @@
-from abc import ABC, abstractmethod
-from typing import Optional, TypeVar, Generic
 import platform
 import threading
-from typing import Optional
+from abc import ABC, abstractmethod
+from typing import Generic, Optional, TypeVar
 
+T = TypeVar("T")
 
-T = TypeVar('T')
 
 class BaseMetricCollector(ABC, Generic[T]):
-    def __init__(self, interval:int = 1):
+    def __init__(self, interval: int = 1):
         self.metric: Optional[T] = None
         self.interval = interval
         self._thread: Optional[threading.Thread] = None
@@ -27,7 +26,7 @@ class BaseMetricCollector(ABC, Generic[T]):
             self._thread = threading.Thread(target=self._collect, daemon=True)
             self._thread.start()
 
-    def stop(self, wait = False):
+    def stop(self, wait=False):
         self._stop_event.set()
         if self._thread and self._thread.is_alive() and wait:
             self._thread.join()

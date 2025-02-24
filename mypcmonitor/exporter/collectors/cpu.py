@@ -1,24 +1,29 @@
 import platform
+import re
 import subprocess
 import time
+
 import psutil
-import re
 
 from mypcmonitor.collectors import BaseMetricCollector
-from mypcmonitor.models.metrics import CpuMetric, CoreMetric
+from mypcmonitor.models.metrics import CoreMetric, CpuMetric
 from mypcmonitor.utils import DefaultList
 
 
 class CpuMetricCollector(BaseMetricCollector[CpuMetric]):
     def _cpu_name(self) -> str:
         cpu_name = platform.processor()
-        if self.system ==  'Darwin':
-            cpu_name =  subprocess.check_output(["sysctl", "-n", "machdep.cpu.brand_string"]).strip().decode()
-        elif self.system == 'Linux':
-            result = subprocess.run(['lscpu'], capture_output=True, text=True)
-            pattern = r'Model name:\s*(.*) @'
+        if self.system == "Darwin":
+            cpu_name = (
+                subprocess.check_output(["sysctl", "-n", "machdep.cpu.brand_string"])
+                .strip()
+                .decode()
+            )
+        elif self.system == "Linux":
+            result = subprocess.run(["lscpu"], capture_output=True, text=True)
+            pattern = r"Model name:\s*(.*) @"
             match = re.search(pattern, result.stdout)
-            cpu_name =  match.group(1) if match else None
+            cpu_name = match.group(1) if match else None
         return cpu_name
 
     @staticmethod
@@ -32,8 +37,8 @@ class CpuMetricCollector(BaseMetricCollector[CpuMetric]):
 
     def _cpu_temp(self) -> float:
         # Sensors available only in Linux and FreeBSD
-        if self.system ==  'FreeBSD' or self.system == 'Linux':
-            return psutil.sensors_temperatures()['coretemp'][0].current
+        if self.system == "FreeBSD" or self.system == "Linux":
+            return psutil.sensors_temperatures()["coretemp"][0].current
         return 0.0
 
     def _collect(self) -> None:
@@ -45,11 +50,13 @@ class CpuMetricCollector(BaseMetricCollector[CpuMetric]):
             cpu_usage = psutil.cpu_percent(percpu=True)
             cpu_freq = self._cpu_freq()
             for idx in range(num_cores):
-                cores.append(CoreMetric(
-                    core_id=idx,
-                    usage_percent=cpu_usage[idx],
-                    clock_speed=cpu_freq[idx]
-                ))
+                cores.append(
+                    CoreMetric(
+                        core_id=idx,
+                        usage_percent=cpu_usage[idx],
+                        clock_speed=cpu_freq[idx],
+                    )
+                )
 
             pass
             cpu_metric = CpuMetric(
@@ -59,14 +66,9 @@ class CpuMetricCollector(BaseMetricCollector[CpuMetric]):
                 usage_percent=sum(cpu_usage) / len(cpu_usage),
                 clock_speed=sum(cpu_freq) / len(cpu_freq),
                 temperature=self._cpu_temp(),
-                cores=cores
+                cores=cores,
             )
             with self._thread_lock:
                 self.metric = cpu_metric
                 self._metric_ready.set()
             time.sleep(self.interval)
-
-
-
-
-

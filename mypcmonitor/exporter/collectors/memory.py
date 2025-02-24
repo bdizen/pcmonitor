@@ -1,4 +1,5 @@
 import time
+
 import psutil
 
 from mypcmonitor.collectors import BaseMetricCollector
@@ -18,14 +19,9 @@ class MemoryMetricCollector(BaseMetricCollector[RamMetric]):
                 memory_usage=mem.percent,
                 total_swap=swap.total,
                 used_swap=swap.used,
-                swap_usage=swap.percent
+                swap_usage=swap.percent,
             )
             with self._thread_lock:
                 self.metric = mem_metric
                 self._metric_ready.set()
             time.sleep(self.interval)
-
-
-
-
-
