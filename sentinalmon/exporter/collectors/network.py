@@ -3,8 +3,8 @@ import socket
 import psutil
 from psutil._common import snetio, snicaddr
 
-from mypcmonitor.collectors import BaseMetricCollector
-from mypcmonitor.models.metrics import NetworkInterfaceMetric, NetworkMetric
+from sentinalmon.collectors import BaseMetricCollector
+from sentinalmon.models.metrics import NetworkInterfaceMetric, NetworkMetric
 
 
 class NetworkMetricCollector(BaseMetricCollector[NetworkMetric]):

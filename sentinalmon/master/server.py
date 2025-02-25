@@ -7,16 +7,16 @@ import uvicorn
 from fastapi import APIRouter, Depends, FastAPI, HTTPException
 from pydantic.v1.json import pydantic_encoder
 
-from mypcmonitor.collectors.base import InstanceCollectors
-from mypcmonitor.master.collectors import RemoteMetricCollector
-from mypcmonitor.models import (
+from sentinalmon.collectors.base import InstanceCollectors
+from sentinalmon.master.collectors import RemoteMetricCollector
+from sentinalmon.models import (
     CpuMetric,
     ExporterInstance,
     NetworkMetric,
     RamMetric,
     StorageMetric,
 )
-from mypcmonitor.models.server import HealthResponse, MetricType, RegistrationResponse
+from sentinalmon.models.server import HealthResponse, MetricType, RegistrationResponse
 
 
 class Master:

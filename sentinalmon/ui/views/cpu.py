@@ -2,9 +2,9 @@ from textual.app import ComposeResult
 from textual.containers import Container, Vertical
 from textual.widgets import Static
 
-from mypcmonitor.models.metrics import CpuMetric
-from mypcmonitor.models.server import ExporterInstance
-from mypcmonitor.ui.master_client import MasterClient
+from sentinalmon.models.metrics import CpuMetric
+from sentinalmon.models.server import ExporterInstance
+from sentinalmon.ui.master_client import MasterClient
 
 
 class CPU(Container):

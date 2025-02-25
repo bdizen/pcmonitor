@@ -6,12 +6,12 @@ from textual.screen import Screen
 from textual.widgets import Footer, Header, OptionList, TabbedContent
 from textual.widgets._option_list import Option
 
-from mypcmonitor.models.server import ExporterInstance
-from mypcmonitor.ui.master_client import MasterClient
-from mypcmonitor.ui.views.cpu import CPU
-from mypcmonitor.ui.views.memory import MemoryView
-from mypcmonitor.ui.views.network import NetworkView
-from mypcmonitor.ui.views.storage import StorageView
+from sentinalmon.models.server import ExporterInstance
+from sentinalmon.ui.master_client import MasterClient
+from sentinalmon.ui.views.cpu import CPU
+from sentinalmon.ui.views.memory import MemoryView
+from sentinalmon.ui.views.network import NetworkView
+from sentinalmon.ui.views.storage import StorageView
 
 
 class InstanceMonitor(Screen):

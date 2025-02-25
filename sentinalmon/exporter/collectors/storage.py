@@ -5,14 +5,14 @@ import subprocess
 import psutil
 from psutil._common import sdiskpart
 
-from mypcmonitor.collectors import BaseMetricCollector
-from mypcmonitor.models.metrics import (
+from sentinalmon.collectors import BaseMetricCollector
+from sentinalmon.models.metrics import (
     DiskMetric,
     DiskType,
     PartitionMetric,
     StorageMetric,
 )
-from mypcmonitor.utils import load_plist
+from sentinalmon.utils import load_plist
 
 
 class StorageMetricCollector(BaseMetricCollector[StorageMetric]):

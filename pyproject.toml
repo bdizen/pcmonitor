@@ -1,6 +1,6 @@
 [tool.poetry]
-name = "mypcmonitor"
-version = "0.1.2"
+name = "sentinalmon"
+version = "0.1.0"
 description = ""
 authors = ["bdizen <bdizenweb@gmail.com>"]
 readme = "README.md"

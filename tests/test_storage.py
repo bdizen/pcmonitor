@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from mypcmonitor.exporter.collectors import (
+from sentinalmon.exporter.collectors import (
     DiskMetricCollector,
     PartitionMetricCollector,
     StorageMetricCollector,

@@ -9,15 +9,15 @@ from fastapi import APIRouter, FastAPI
 from pydantic.dataclasses import dataclass
 from pydantic.v1.json import pydantic_encoder
 
-from mypcmonitor.collectors.base import InstanceCollectors
-from mypcmonitor.exporter.collectors import (
+from sentinalmon.collectors.base import InstanceCollectors
+from sentinalmon.exporter.collectors import (
     CpuMetricCollector,
     MemoryMetricCollector,
     NetworkMetricCollector,
     StorageMetricCollector,
 )
-from mypcmonitor.models import ExporterInstance
-from mypcmonitor.models.server import HealthResponse, MetricType, RegistrationStatus
+from sentinalmon.models import ExporterInstance
+from sentinalmon.models.server import HealthResponse, MetricType, RegistrationStatus
 
 
 @dataclass

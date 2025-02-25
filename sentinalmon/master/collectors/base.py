@@ -2,9 +2,9 @@ from typing import Generic, TypeVar
 
 import requests
 
-from mypcmonitor.collectors import BaseMetricCollector
-from mypcmonitor.exporter import metric_endpoint_map
-from mypcmonitor.models.server import ExporterInstance
+from sentinalmon.collectors import BaseMetricCollector
+from sentinalmon.exporter import metric_endpoint_map
+from sentinalmon.models.server import ExporterInstance
 
 T = TypeVar("T")
 

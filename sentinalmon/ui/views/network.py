@@ -2,10 +2,10 @@ from textual.app import ComposeResult
 from textual.containers import Container, Vertical
 from textual.widgets import Static
 
-from mypcmonitor.models import NetworkMetric
-from mypcmonitor.models.metrics import CpuMetric, NetworkInterfaceMetric
-from mypcmonitor.models.server import ExporterInstance
-from mypcmonitor.ui.master_client import MasterClient
+from sentinalmon.models import NetworkMetric
+from sentinalmon.models.metrics import CpuMetric, NetworkInterfaceMetric
+from sentinalmon.models.server import ExporterInstance
+from sentinalmon.ui.master_client import MasterClient
 
 
 class NetworkView(Container):

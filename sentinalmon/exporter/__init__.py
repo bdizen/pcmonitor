@@ -1,4 +1,4 @@
-from mypcmonitor.models.metrics import (
+from sentinalmon.models.metrics import (
     CpuMetric,
     NetworkMetric,
     RamMetric,

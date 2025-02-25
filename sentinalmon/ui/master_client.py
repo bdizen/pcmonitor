@@ -2,8 +2,8 @@ from urllib.parse import urljoin
 
 import requests
 
-from mypcmonitor.models.metrics import InstanceMetric
-from mypcmonitor.models.server import ExporterInstance
+from sentinalmon.models.metrics import InstanceMetric
+from sentinalmon.models.server import ExporterInstance
 
 
 class MasterClient:

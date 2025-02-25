@@ -3,7 +3,7 @@ import threading
 from abc import ABC, abstractmethod
 from typing import Generic, Optional, TypeVar
 
-from mypcmonitor.models import CpuMetric, NetworkMetric, RamMetric, StorageMetric
+from sentinalmon.models import CpuMetric, NetworkMetric, RamMetric, StorageMetric
 
 T = TypeVar("T")
 

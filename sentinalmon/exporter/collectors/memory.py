@@ -1,7 +1,7 @@
 import psutil
 
-from mypcmonitor.collectors import BaseMetricCollector
-from mypcmonitor.models.metrics import RamMetric
+from sentinalmon.collectors import BaseMetricCollector
+from sentinalmon.models.metrics import RamMetric
 
 
 class MemoryMetricCollector(BaseMetricCollector[RamMetric]):

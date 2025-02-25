@@ -1,9 +1,9 @@
 import typer
 
-from mypcmonitor.exporter.server import Exporter, ServerConfig
-from mypcmonitor.master.server import Master
-from mypcmonitor.ui.main import PcMonitor
-from mypcmonitor.ui.master_client import MasterClient
+from sentinalmon.exporter.server import Exporter, ServerConfig
+from sentinalmon.master.server import Master
+from sentinalmon.ui.main import PcMonitor
+from sentinalmon.ui.master_client import MasterClient
 
 app = typer.Typer()
 

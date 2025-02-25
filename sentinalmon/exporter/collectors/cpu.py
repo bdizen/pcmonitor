@@ -4,9 +4,9 @@ import subprocess
 
 import psutil
 
-from mypcmonitor.collectors import BaseMetricCollector
-from mypcmonitor.models.metrics import CoreMetric, CpuMetric
-from mypcmonitor.utils import DefaultList
+from sentinalmon.collectors import BaseMetricCollector
+from sentinalmon.models.metrics import CoreMetric, CpuMetric
+from sentinalmon.utils import DefaultList
 
 
 class CpuMetricCollector(BaseMetricCollector[CpuMetric]):
