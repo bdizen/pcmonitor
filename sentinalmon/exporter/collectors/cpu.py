@@ -22,7 +22,7 @@ class CpuMetricCollector(BaseMetricCollector[CpuMetric]):
             result = subprocess.run(["lscpu"], capture_output=True, text=True)
             pattern = r"Model name:\s*(.*) @"
             match = re.search(pattern, result.stdout)
-            cpu_name = match.group(1) if match else None
+            cpu_name = match.group(1) if match else "Unknown"
         return cpu_name
 
     @staticmethod
@@ -37,7 +37,9 @@ class CpuMetricCollector(BaseMetricCollector[CpuMetric]):
     def _cpu_temp(self) -> float:
         # Sensors available only in Linux and FreeBSD
         if self.system == "FreeBSD" or self.system == "Linux":
-            return psutil.sensors_temperatures()["coretemp"][0].current
+            data = psutil.sensors_temperatures()
+            if "coretemp" in data.keys():
+                return psutil.sensors_temperatures()["coretemp"][0].current
         return 0.0
 
     def _collect(self) -> None:

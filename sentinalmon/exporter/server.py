@@ -99,6 +99,7 @@ class Exporter:
         return True
 
     async def registration_loop(self):
+        await asyncio.sleep(1)
         retry_delay = self.REGISTRATION_RETRY_DELAY
         while not self._stop_registration.is_set():
             self.registration_status = RegistrationStatus.ATTEMPTING

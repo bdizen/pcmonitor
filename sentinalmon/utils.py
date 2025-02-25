@@ -1,3 +1,4 @@
+import hashlib
 import json
 import subprocess
 
@@ -33,3 +34,6 @@ def load_plist(b_input) -> dict:
     cmd = ["plutil", "-convert", "json", "-o", "-", "-"]
     data = subprocess.run(cmd, input=b_input, capture_output=True, text=True)
     return json.loads(data.stdout)
+
+def convert_to_md5(s: str)->str:
+    return hashlib.md5(s.encode()).hexdigest()

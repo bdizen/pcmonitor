@@ -136,7 +136,7 @@ class Master:
                         print(f"Unregister instance {instance.hostname} is offline")
                         self.collectors.pop(instance).stop()
                         self.instances.pop(instance.id)
-                self._stop_event.wait(timeout=self.HEALTH_CHECK_INTERVAL)
+            self._stop_event.wait(timeout=self.HEALTH_CHECK_INTERVAL)
 
     def start(self) -> None:
         """
