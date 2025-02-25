@@ -10,6 +10,7 @@ from mypcmonitor.models.master import ExporterInstance
 from mypcmonitor.ui.master_client import MasterClient
 from mypcmonitor.ui.views.cpu import CPU
 from mypcmonitor.ui.views.memory import MemoryView
+from mypcmonitor.ui.views.network import NetworkView
 from mypcmonitor.ui.views.storage import StorageView
 
 
@@ -33,10 +34,15 @@ class InstanceMonitor(Screen):
                 id=f"storage-{self.instance.id}",
                 client=self.client,
             )
-            yield Container()
+            yield NetworkView(
+                instance=self.instance,
+                id=f"network-{self.instance.id}",
+                client=self.client
+            )
         yield Footer()
 
     def on_mount(self):
+        self.update()
         self.set_interval(1, self.update)
 
     def update(self):
@@ -47,6 +53,9 @@ class InstanceMonitor(Screen):
         self.query_one(f"#memory-{self.instance.id}", MemoryView).update(metric.memory)
         self.query_one(f"#storage-{self.instance.id}", StorageView).update(
             metric.storage
+        )
+        self.query_one(f"#network-{self.instance.id}", NetworkView).update(
+            metric.network
         )
 
 

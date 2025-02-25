@@ -18,7 +18,7 @@ Horizontal {
 }
 .core-usage {
     text-align: center;
-    padding-top: 1;
+    padding-top: 0;
 }
 #cores-container {
         layout: grid;
@@ -80,6 +80,21 @@ SwapDisplay {
 }
 
 .part-box {
+    border: round white;
+
+    width: 100%;
+    height: 100%;
+}
+
+#nics-container {
+        layout: grid;
+        grid-size: 4;
+        grid-rows: 1fr;
+        grid-columns: 1fr;
+        grid-gutter: 1;
+}
+
+.nic-box {
     border: round white;
 
     width: 100%;
