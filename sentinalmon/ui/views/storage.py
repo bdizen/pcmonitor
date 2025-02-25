@@ -5,6 +5,9 @@ from textual.widgets import Label, Static, TabbedContent
 from sentinalmon.models.metrics import DiskMetric, PartitionMetric, StorageMetric
 from sentinalmon.models.server import ExporterInstance
 from sentinalmon.ui.master_client import MasterClient
+from base64 import b64encode
+
+from sentinalmon.utils import convert_to_md5
 
 
 class DriveDisplay(Static):
@@ -17,7 +20,7 @@ class DriveDisplay(Static):
             f"[bold]IOPS:[/bold] {metric.iops}"
         )
 
-
+df
 class PartitionDisplay(Static):
     def update(self, metric: PartitionMetric) -> None:
         super().update(
@@ -54,7 +57,7 @@ class StorageView(Container):
             disks_container.mount(
                 Vertical(
                     Label(disk.disk_name, classes="core-title"),
-                    DriveDisplay(id=disk.disk_name),
+                    DriveDisplay(id=f"#disk-{convert_to_md5(disk.disk_name)}"),
                     classes="disk-box",
                 )
             )
@@ -62,13 +65,13 @@ class StorageView(Container):
             parts_container.mount(
                 Vertical(
                     Label(part.partition_name, classes="core-title"),
-                    PartitionDisplay(id=part.partition_name),
+                    PartitionDisplay(id=f"part-{convert_to_md5(part.partition_name)}"),
                     classes="part-box",
                 )
             )
 
     def update(self, metric: StorageMetric):
         for disk in metric.disks:
-            self.query_one(f"#{disk.disk_name}", DriveDisplay).update(disk)
+            self.query_one(f"#disk-{convert_to_md5(disk.disk_name)}", DriveDisplay).update(disk)
         for part in metric.partitions:
-            self.query_one(f"#{part.partition_name}", PartitionDisplay).update(part)
+            self.query_one(f"#part-{convert_to_md5(part.partition_name)}", PartitionDisplay).update(part)

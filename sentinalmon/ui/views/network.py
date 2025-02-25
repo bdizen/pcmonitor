@@ -6,6 +6,7 @@ from sentinalmon.models import NetworkMetric
 from sentinalmon.models.metrics import CpuMetric, NetworkInterfaceMetric
 from sentinalmon.models.server import ExporterInstance
 from sentinalmon.ui.master_client import MasterClient
+from sentinalmon.utils import convert_to_md5
 
 
 class NetworkView(Container):
@@ -30,28 +31,28 @@ class NetworkView(Container):
             cores_container.mount(
                 Vertical(
                     Static(f"{nic.interface_name}", classes="core-title"),
-                    Static("IP: ", id=f"ip-{nic.interface_name}", classes="core-usage"),
+                    Static("IP: ", id=f"ip-{convert_to_md5(nic.interface_name)}", classes="core-usage"),
                     Static(
-                        "MAC: ", id=f"mac-{nic.interface_name}", classes="core-usage"
+                        "MAC: ", id=f"mac-{convert_to_md5(nic.interface_name)}", classes="core-usage"
                     ),
                     Static(
                         "Total Recv: ",
-                        id=f"total-rx-{nic.interface_name}",
+                        id=f"total-rx-{convert_to_md5(nic.interface_name)}",
                         classes="core-usage",
                     ),
                     Static(
                         "Total Sent: ",
-                        id=f"total-tx-{nic.interface_name}",
+                        id=f"total-tx-{convert_to_md5(nic.interface_name)}",
                         classes="core-usage",
                     ),
                     Static(
                         "Recv Speed: ",
-                        id=f"speed-rx-{nic.interface_name}",
+                        id=f"speed-rx-{convert_to_md5(nic.interface_name)}",
                         classes="core-usage",
                     ),
                     Static(
                         "Sent Speed: ",
-                        id=f"speed-tx-{nic.interface_name}",
+                        id=f"speed-tx-{convert_to_md5(nic.interface_name)}",
                         classes="core-usage",
                     ),
                     classes="nic-box",
@@ -69,21 +70,21 @@ class NetworkView(Container):
             self.update_nic(nic)
 
     def update_nic(self, metric: NetworkInterfaceMetric):
-        self.query_one(f"#ip-{metric.interface_name}", Static).update(
+        self.query_one(f"#ip-{convert_to_md5(metric.interface_name)}", Static).update(
             f"IP: {metric.ip_address}"
         )
-        self.query_one(f"#mac-{metric.interface_name}", Static).update(
+        self.query_one(f"#mac-{convert_to_md5(metric.interface_name)}", Static).update(
             f"MAC: {metric.mac_address}"
         )
-        self.query_one(f"#total-rx-{metric.interface_name}", Static).update(
+        self.query_one(f"#total-rx-{convert_to_md5(metric.interface_name)}", Static).update(
             f"Total Recv: {metric.total_rx}"
         )
-        self.query_one(f"#total-tx-{metric.interface_name}", Static).update(
+        self.query_one(f"#total-tx-{convert_to_md5(metric.interface_name)}", Static).update(
             f"Total Recv: {metric.total_tx}"
         )
-        self.query_one(f"#speed-rx-{metric.interface_name}", Static).update(
+        self.query_one(f"#speed-rx-{convert_to_md5(metric.interface_name)}", Static).update(
             f"Recv Speed: {metric.rx_speed}"
         )
-        self.query_one(f"#speed-tx-{metric.interface_name}", Static).update(
+        self.query_one(f"#speed-tx-{convert_to_md5(metric.interface_name)}", Static).update(
             f"Sent Speed: {metric.tx_speed}"
         )
