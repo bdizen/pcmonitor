@@ -2,9 +2,8 @@ from textual.app import ComposeResult
 from textual.containers import Container, Vertical
 from textual.widgets import Label, Static, TabbedContent
 
-from mypcmonitor.models.master import ExporterInstance
-from mypcmonitor.models.metrics import (DiskMetric, PartitionMetric,
-                                        StorageMetric)
+from mypcmonitor.models.metrics import DiskMetric, PartitionMetric, StorageMetric
+from mypcmonitor.models.server import ExporterInstance
 from mypcmonitor.ui.master_client import MasterClient
 
 
@@ -43,6 +42,7 @@ class StorageView(Container):
         with TabbedContent("Disks", "Partitions"):
             yield Container(id="disks-container")
             yield Container(id="parts-container")
+
     def on_mount(self):
         metric = self.client.get_metrics(self.instance.id)
         if metric is None:
@@ -53,13 +53,18 @@ class StorageView(Container):
         for disk in storage_metric.disks:
             disks_container.mount(
                 Vertical(
-                            Label(disk.disk_name, classes="core-title"),
-                    DriveDisplay(id=disk.disk_name)
-                    , classes="disk-box")
+                    Label(disk.disk_name, classes="core-title"),
+                    DriveDisplay(id=disk.disk_name),
+                    classes="disk-box",
+                )
             )
         for part in storage_metric.partitions:
             parts_container.mount(
-                Vertical(Label(part.partition_name, classes="core-title"),PartitionDisplay(id=part.partition_name), classes="part-box")
+                Vertical(
+                    Label(part.partition_name, classes="core-title"),
+                    PartitionDisplay(id=part.partition_name),
+                    classes="part-box",
+                )
             )
 
     def update(self, metric: StorageMetric):

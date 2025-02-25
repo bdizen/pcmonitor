@@ -1,5 +1,3 @@
-import time
-
 import psutil
 
 from mypcmonitor.collectors import BaseMetricCollector
@@ -24,4 +22,4 @@ class MemoryMetricCollector(BaseMetricCollector[RamMetric]):
             with self._thread_lock:
                 self.metric = mem_metric
                 self._metric_ready.set()
-            time.sleep(self.interval)
+            self._stop_event.wait(timeout=self.interval)

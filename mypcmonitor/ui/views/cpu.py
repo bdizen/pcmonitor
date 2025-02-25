@@ -2,8 +2,8 @@ from textual.app import ComposeResult
 from textual.containers import Container, Vertical
 from textual.widgets import Static
 
-from mypcmonitor.models.master import ExporterInstance
 from mypcmonitor.models.metrics import CpuMetric
+from mypcmonitor.models.server import ExporterInstance
 from mypcmonitor.ui.master_client import MasterClient
 
 

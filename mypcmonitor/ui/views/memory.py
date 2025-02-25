@@ -2,8 +2,8 @@ from textual.app import ComposeResult
 from textual.containers import Center, Container, Vertical
 from textual.widgets import ProgressBar, Static
 
-from mypcmonitor.models.master import ExporterInstance
 from mypcmonitor.models.metrics import RamMetric
+from mypcmonitor.models.server import ExporterInstance
 
 
 def mem_template(metric: RamMetric) -> str:

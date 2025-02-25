@@ -3,8 +3,8 @@ from textual.containers import Container, Vertical
 from textual.widgets import Static
 
 from mypcmonitor.models import NetworkMetric
-from mypcmonitor.models.master import ExporterInstance
 from mypcmonitor.models.metrics import CpuMetric, NetworkInterfaceMetric
+from mypcmonitor.models.server import ExporterInstance
 from mypcmonitor.ui.master_client import MasterClient
 
 
@@ -31,11 +31,29 @@ class NetworkView(Container):
                 Vertical(
                     Static(f"{nic.interface_name}", classes="core-title"),
                     Static("IP: ", id=f"ip-{nic.interface_name}", classes="core-usage"),
-                    Static("MAC: ", id=f"mac-{nic.interface_name}", classes="core-usage"),
-                    Static("Total Recv: ", id=f"total-rx-{nic.interface_name}", classes="core-usage"),
-                    Static("Total Sent: ", id=f"total-tx-{nic.interface_name}", classes="core-usage"),
-                    Static("Recv Speed: ", id=f"speed-rx-{nic.interface_name}", classes="core-usage"),
-                    Static("Sent Speed: ", id=f"speed-tx-{nic.interface_name}", classes="core-usage"),
+                    Static(
+                        "MAC: ", id=f"mac-{nic.interface_name}", classes="core-usage"
+                    ),
+                    Static(
+                        "Total Recv: ",
+                        id=f"total-rx-{nic.interface_name}",
+                        classes="core-usage",
+                    ),
+                    Static(
+                        "Total Sent: ",
+                        id=f"total-tx-{nic.interface_name}",
+                        classes="core-usage",
+                    ),
+                    Static(
+                        "Recv Speed: ",
+                        id=f"speed-rx-{nic.interface_name}",
+                        classes="core-usage",
+                    ),
+                    Static(
+                        "Sent Speed: ",
+                        id=f"speed-tx-{nic.interface_name}",
+                        classes="core-usage",
+                    ),
                     classes="nic-box",
                 )
             )

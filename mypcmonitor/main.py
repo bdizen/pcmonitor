@@ -1,4 +1,3 @@
-import requests
 import typer
 
 from mypcmonitor.exporter.server import Exporter, ServerConfig
@@ -11,24 +10,28 @@ app = typer.Typer()
 
 @app.command()
 def exporter(
-    master_host="0.0.0.0", master_port=8001, host="0.0.0.0", port=8000, hostname=None
+    master_host: str = "0.0.0.0",
+    master_port: int = 8001,
+    host: str = "0.0.0.0",
+    port: int = 8000,
+    hostname: str = None,
 ):
     config = ServerConfig(ip_addr=master_host, port=master_port)
-    exporter = Exporter(config, host, port, hostname)
-    exporter.start()
+    server = Exporter(config, host, port, hostname)
+    server.start()
 
 
 @app.command(name="client")
-def textual_ui(master_host="0.0.0.0", master_port=8001):
+def textual_ui(master_host: str = "0.0.0.0", master_port: int = 8001):
     client = MasterClient(host=master_host, port=master_port)
     tui = PcMonitor(client)
     tui.run()
 
 
 @app.command()
-def master(host="0.0.0.0", port=8001):
-    master = Master(host, port)
-    master.start()
+def master(host: str = "0.0.0.0", port: int = 8001):
+    server = Master(host, port)
+    server.start()
 
 
 if __name__ == "__main__":

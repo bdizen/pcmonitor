@@ -1,7 +1,6 @@
 import platform
 import re
 import subprocess
-import time
 
 import psutil
 
@@ -71,4 +70,4 @@ class CpuMetricCollector(BaseMetricCollector[CpuMetric]):
             with self._thread_lock:
                 self.metric = cpu_metric
                 self._metric_ready.set()
-            time.sleep(self.interval)
+            self._stop_event.wait(timeout=self.interval)

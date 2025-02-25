@@ -1,5 +1,9 @@
-from mypcmonitor.models.metrics import (CpuMetric, NetworkMetric, RamMetric,
-                                        StorageMetric)
+from mypcmonitor.models.metrics import (
+    CpuMetric,
+    NetworkMetric,
+    RamMetric,
+    StorageMetric,
+)
 
 metric_endpoint_map = {
     CpuMetric: "cpu",

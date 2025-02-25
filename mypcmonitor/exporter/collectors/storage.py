@@ -1,14 +1,17 @@
 import json
 import os
 import subprocess
-import time
 
 import psutil
 from psutil._common import sdiskpart
 
 from mypcmonitor.collectors import BaseMetricCollector
-from mypcmonitor.models.metrics import (DiskMetric, DiskType, PartitionMetric,
-                                        StorageMetric)
+from mypcmonitor.models.metrics import (
+    DiskMetric,
+    DiskType,
+    PartitionMetric,
+    StorageMetric,
+)
 from mypcmonitor.utils import load_plist
 
 
@@ -74,7 +77,7 @@ class StorageMetricCollector(BaseMetricCollector[StorageMetric]):
             with self._thread_lock:
                 self.metric = storage_metric
                 self._metric_ready.set()
-            time.sleep(self.interval)
+            self._stop_event.wait(timeout=self.interval)
 
         for collector in drive_collectors.values():
             collector.stop()
@@ -144,7 +147,7 @@ class DiskMetricCollector(BaseMetricCollector[DiskMetric]):
     def _collect(self) -> None:
         while not self._stop_event.is_set():
             io_start = psutil.disk_io_counters(perdisk=True)[self.drive]
-            time.sleep(self.interval)
+            self._stop_event.wait(timeout=self.interval)
             io_end = psutil.disk_io_counters(perdisk=True)[self.drive]
             disk_metric = DiskMetric(
                 disk_name=self.drive,
@@ -199,4 +202,4 @@ class PartitionMetricCollector(BaseMetricCollector[PartitionMetric]):
             with self._thread_lock:
                 self.metric = part_metric
                 self._metric_ready.set()
-            time.sleep(self.interval)
+            self._stop_event.wait(timeout=self.interval)

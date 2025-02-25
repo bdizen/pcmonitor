@@ -6,7 +6,7 @@ from textual.screen import Screen
 from textual.widgets import Footer, Header, OptionList, TabbedContent
 from textual.widgets._option_list import Option
 
-from mypcmonitor.models.master import ExporterInstance
+from mypcmonitor.models.server import ExporterInstance
 from mypcmonitor.ui.master_client import MasterClient
 from mypcmonitor.ui.views.cpu import CPU
 from mypcmonitor.ui.views.memory import MemoryView
@@ -37,7 +37,7 @@ class InstanceMonitor(Screen):
             yield NetworkView(
                 instance=self.instance,
                 id=f"network-{self.instance.id}",
-                client=self.client
+                client=self.client,
             )
         yield Footer()
 

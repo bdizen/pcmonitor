@@ -1,5 +1,4 @@
 import socket
-import time
 
 import psutil
 from psutil._common import snetio, snicaddr
@@ -51,7 +50,7 @@ class NetworkMetricCollector(BaseMetricCollector[NetworkMetric]):
         nics = psutil.net_if_addrs()
         nic_metrics = []
         nics_io_counters_start = psutil.net_io_counters(pernic=True)
-        time.sleep(self.interval)
+        self._stop_event.wait(timeout=self.interval)
         nics_io_counters_end = psutil.net_io_counters(pernic=True)
         for key in nics:
             nic_metrics.append(
