@@ -2,10 +2,10 @@
 SentinalMon is a system monitoring tool built with Python that allows you to track and visualize real-time performance metrics across multiple machines in your network.
 
 ### Features
-- Multi-machine Monitoring: Monitor multiple systems from a central interface
-- Real-time Metrics: Track system performance with live updates
-- Rich Visualization: Terminal-based UI with intuitive dashboards
-- Distributed Architecture: Master-agent model for scalable monitoring
+- **Multi-machine Monitoring**: Monitor multiple systems from a central interface
+- **Real-time Metrics**: Track system performance with live updates
+- **Rich Visualization**: Terminal-based UI with intuitive dashboards
+- **Distributed Architecture**: Master-agent model for scalable monitoring
 
 ### Metrics Tracked
 - **CPU**: Usage percentage, core-specific metrics, clock speeds, and temperature
@@ -43,17 +43,18 @@ poetry shell
 ### Starting the Master Server
 
 ```Bash
-poetry run pcmonitor master --host 0.0.0.0 --port 8001
+poetry run sentinal master --host 0.0.0.0 --port 8001
 
 ```
 ### Running an Exporter on a Machine to Monitor
 ```Bash
-poetry run pcmonitor exporter --master-host <master-ip> --master-port 8001 --host 0.0.0.0 --port 8000
+poetry run sentinal exporter --master-host <master-ip> --master-port 8001 --host 0.0.0.0 --port 8000
 ```
 ### Launching the Client UI
 
-Bash
-poetry run pcmonitor client --master-host <master-ip> --master-port 8001
+```Bash
+poetry run sentinal client --master-host <master-ip> --master-port 8001
+```
 ### Client UI Navigation
 - Use the Tab key to switch between metric views (CPU, Memory, Storage, Network)
 - Press i to open the instance selector

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "sentinalmon"
-version = "0.1.0"
+version = "0.1.1"
 description = ""
 authors = ["bdizen <bdizenweb@gmail.com>"]
 readme = "README.md"
@@ -18,7 +18,7 @@ python-jose = "^3.4.0"
 passlib = "^1.7.4"
 
 [tool.poetry.scripts]
-pcmonitor = "mypcmonitor.main:app"
+sentinal = "sentinalmon.main:app"
 
 [tool.poetry.group.dev.dependencies]
 black = "^25.1.0"
